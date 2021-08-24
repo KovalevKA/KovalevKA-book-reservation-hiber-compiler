@@ -2,6 +2,7 @@ package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.AuthorDTO;
 import com.example.bookreservationhibercompiler.service.AuthorService;
+import com.example.bookreservationhibercompiler.service.impl.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
