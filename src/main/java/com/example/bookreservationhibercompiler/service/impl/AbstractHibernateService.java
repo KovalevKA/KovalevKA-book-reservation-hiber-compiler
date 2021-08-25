@@ -45,6 +45,9 @@ public class AbstractHibernateService<Entity extends AbstractEntity, DTO extends
 		return toDTO(entity);
 	}
 
+	/**
+	 * TODO:Modify business logic
+	 */
 	@Transactional
 	public DTO update(Long id, DTO dto) {
 		Entity entity = sessionFactory.getCurrentSession().get(clazzEntity, id);

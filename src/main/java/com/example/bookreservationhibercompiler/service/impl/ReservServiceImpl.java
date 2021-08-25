@@ -9,22 +9,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * TODO:Add some business logic
+ */
 @Service
 public class ReservServiceImpl implements ReservService {
 
-	public List<ReservDTO> getReservationClientListById(Long clientId) {
-		return null;
-	}
+    public List<ReservDTO> getReservationClientListById(Long clientId) {
+        return null;
+    }
 
-	public List<ReservDTO> checkReservedBooksByBookId(RequestParamForCheckReservedBooksByBookId param) {
-		return null;
-	}
+    public List<ReservDTO> checkReservedBooksByBookId(RequestParamForCheckReservedBooksByBookId param) {
+        return null;
+    }
 
-	public List<ReservDTO> make(RequestParamForMakeReservetion param) {
-		return null;
-	}
+    public List<ReservDTO> make(RequestParamForMakeReservetion param) {
+        return null;
+    }
 
-	public Integer cancel(RequestParamForCancelReservation param) {
-		return null;
-	}
+    public Integer cancel(RequestParamForCancelReservation param) {
+        return null;
+    }
 }
