@@ -7,7 +7,7 @@ public interface CommonService<Entity, DTO> {
 
 	public DTO findOne(long id);
 
-	public List findAll();
+	public List<DTO> findAll();
 
 	public DTO create(DTO dto);
 

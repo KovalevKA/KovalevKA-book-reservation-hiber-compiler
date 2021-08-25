@@ -26,7 +26,7 @@ public class BookController {
 
 	@GET
 	@Path("")
-	public List<Book> getAll() {
+	public List<BookDTO> getAll() {
 		return bookService.findAll();
 	}
 

@@ -1,46 +1,50 @@
 package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.ReservDTO;
+import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForCancelReservation;
+import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForCheckReservedBooksByBookId;
+import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForMakeReservetion;
 import com.example.bookreservationhibercompiler.service.ReservService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
-@RestController
-@RequestMapping("reservation")
+import javax.ws.rs.*;
+import java.util.List;
+
+@Component
+@Path("reservation")
+@Consumes(MediaType.APPLICATION_JSON_VALUE)
+@Produces(MediaType.APPLICATION_JSON_VALUE)
 public class ReservController {
 
 	@Autowired
 	private ReservService reservService;
 
-	@GetMapping()
+	@GET()
+	@Path("")
 	public List<ReservDTO> getListReservByClientId(
-		@RequestParam(name = "clientId") Long clientId) {
+			@QueryParam("clientId") Long clientId) {
 		return reservService.getReservationClientListById(clientId);
 	}
 
-	@PostMapping("check")
+	@POST
+	@Path("check")
 	public List<ReservDTO> checkReservedBooksByBookId(
-		@RequestParam(name = "listBooksId") List<Long> listBooksId) {
+			RequestParamForCheckReservedBooksByBookId listBooksId) {
 		return reservService.checkReservedBooksByBookId(listBooksId);
 	}
 
-	@PostMapping("make")
+	@POST
+	@Path("make")
 	public List<ReservDTO> makeReservation(
-		@RequestParam(name = "clientId") Long clientId,
-		@RequestParam(name = "listBooksId") List<Long> listBooksId,
-		@RequestParam(name = "dateTo") String dateTo) {
-		return reservService.make(clientId, listBooksId, dateTo);
+			RequestParamForMakeReservetion param) {
+		return reservService.make(param);
 	}
 
-	@PostMapping("cancel")
-	public Integer cancelReservation(
-		@RequestParam(name = "clientId") Long clientId,
-		@RequestParam(name = "reservId") List<Long> listReservId) {
-		return reservService.cancel(clientId, listReservId);
+	@POST
+	@Path("cancel")
+	public Integer cancelReservation(RequestParamForCancelReservation param) {
+		return reservService.cancel(param);
 	}
 }

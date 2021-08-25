@@ -4,11 +4,12 @@ import com.example.bookreservationhibercompiler.dto.AbstractDTO;
 import com.example.bookreservationhibercompiler.entity.AbstractEntity;
 import com.example.bookreservationhibercompiler.mapper.AbstractMapper;
 import com.example.bookreservationhibercompiler.service.CommonService;
-import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public class AbstractHibernateService<Entity extends AbstractEntity, DTO extends AbstractDTO>
 	extends AbstractMapper<Entity, DTO>
@@ -32,9 +33,9 @@ public class AbstractHibernateService<Entity extends AbstractEntity, DTO extends
 	}
 
 	@Transactional(readOnly = true)
-	public List findAll() {
-		return (List) toDTOs(
-			getCurrentSession().createQuery("from " + clazzEntity.getName()).list());
+	public List<DTO> findAll() {
+		return (List<DTO>) toDTOs(
+				getCurrentSession().createQuery("from " + clazzEntity.getName()).list());
 	}
 
 	@Transactional
