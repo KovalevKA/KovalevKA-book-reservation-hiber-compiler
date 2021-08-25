@@ -18,6 +18,7 @@
 		<springOrm.version>5.3.9</springOrm.version>
 		<hibernate.version>5.5.6.Final</hibernate.version>
 		<dbcp.version>9.0.1</dbcp.version>
+		<hibersearch.version>6.0.3.Final</hibersearch.version>
 		<modelmaper.version>2.4.4</modelmaper.version>
 	</properties>
 	<dependencies>
@@ -38,6 +39,23 @@
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-dbcp</artifactId>
 			<version>${dbcp.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.search</groupId>
+			<artifactId>hibernate-search-mapper-orm</artifactId>
+			<version>${hibersearch.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.search</groupId>
+			<artifactId>hibernate-search-backend-elasticsearch</artifactId>
+			<version>${hibersearch.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>${elasticsearch.version}</version>
 		</dependency>
 
 		<dependency>
