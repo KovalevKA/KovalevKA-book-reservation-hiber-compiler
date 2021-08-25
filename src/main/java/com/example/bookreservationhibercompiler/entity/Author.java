@@ -2,6 +2,7 @@ package com.example.bookreservationhibercompiler.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class Author extends AbstractEntity {
           inverseJoinColumns = {@JoinColumn(name = "book_id", referencedColumnName = "book_id")})
   private final List<Book> bookList = new ArrayList<>();
 
+  @FullTextField
   @Column(name = "name")
   private String name;
 

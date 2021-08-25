@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.*;
 @Setter
 @ToString
 @NoArgsConstructor
+@Indexed(index = "book")
 @Entity
 @Table(name = "book")
 @AttributeOverride(name = "id", column = @Column(name = "book_id"))
@@ -26,28 +28,37 @@ public class Book extends AbstractEntity implements Serializable {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
   private final List<Reserv> reservList = new ArrayList<>();
 
+  @IndexedEmbedded
   @ManyToMany(mappedBy = "bookList",
           fetch = FetchType.EAGER,
           cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private final Set<Author> authorList = new HashSet<>();
+
+  @IndexedEmbedded
   @ManyToMany(mappedBy = "bookList",
           fetch = FetchType.EAGER,
           cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private final Set<Genre> genreList = new HashSet<>();
+
+  @IndexedEmbedded
   @ManyToMany(mappedBy = "bookList",
           fetch = FetchType.EAGER,
           cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private final Set<Translator> translatorList = new HashSet<>();
 
+  @FullTextField
   @Column(name = "name")
   private String name;
 
   @NaturalId
+  @DocumentId
   private String isbn;
 
+  @FullTextField
   @Column(name = "publishing_house")
   private String publishHouse;
 
+  @GenericField
   @Column(name = "publishing_year")
   private int publishYear;
 

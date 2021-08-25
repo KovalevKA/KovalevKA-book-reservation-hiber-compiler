@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Translator extends AbstractEntity {
           inverseJoinColumns = {@JoinColumn(name = "book_id", referencedColumnName = "book_id")})
   private final List<Book> bookList = new ArrayList<>();
 
+  @FullTextField
   @Column(name = "name")
   private String name;
 

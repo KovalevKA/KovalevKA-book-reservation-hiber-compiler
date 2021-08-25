@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class AbstractMapper<Entity extends AbstractEntity, DTO extends AbstractDTO> {
@@ -32,8 +33,8 @@ public class AbstractMapper<Entity extends AbstractEntity, DTO extends AbstractD
         return (Collection<Entity>) dtos.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
-    public <DTO> Collection<DTO> toDTOs(Collection<Entity> entities) {
-        return (Collection<DTO>) entities.stream().map(this::toDTO).collect(Collectors.toList());
+    public <DTO> List<DTO> toDTOs(Collection<Entity> entities) {
+        return (List<DTO>) entities.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
 
