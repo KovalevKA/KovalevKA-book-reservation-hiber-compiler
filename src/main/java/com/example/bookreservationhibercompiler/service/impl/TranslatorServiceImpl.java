@@ -23,7 +23,7 @@ public class TranslatorServiceImpl
 	@Override
 	public List<TranslatorDTO> getByNameLike(String name) {
 		return sessionFactory.getCurrentSession()
-			.createQuery("FROM Translator WHER LOWER(name) LIKE LOWER(:name)")
+			.createQuery("FROM Translator WHERE LOWER(name) LIKE LOWER(:name)")
 			.setParameter("name", "%" + name + "%")
 			.getResultList()
 			;

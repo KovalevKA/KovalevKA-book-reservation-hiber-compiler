@@ -4,9 +4,11 @@ import com.example.bookreservationhibercompiler.dto.ReservDTO;
 import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForCancelReservation;
 import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForCheckReservedBooksByBookId;
 import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForMakeReservetion;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface ReservService {
 
 	public List<ReservDTO> getReservationClientListById(Long clientId);
