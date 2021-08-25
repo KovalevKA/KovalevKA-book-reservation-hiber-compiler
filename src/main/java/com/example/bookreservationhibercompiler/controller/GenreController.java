@@ -19,13 +19,11 @@ public class GenreController {
 	private GenreService genreService;
 
 	@GET
-	@Path("")
 	public List<GenreDTO> getAllGenres() {
 		return genreService.findAll();
 	}
 
 	@POST
-	@Path("")
 	public GenreDTO addGenre(GenreDTO genreDTO) {
 		return (GenreDTO) genreService.create(genreDTO);
 	}

@@ -19,13 +19,11 @@ public class TranslatorController {
 	private TranslatorService translatorService;
 
 	@GET
-	@Path("")
 	public List<TranslatorDTO> getAllTranslators() {
 		return translatorService.findAll();
 	}
 
 	@POST
-	@Path("")
 	public TranslatorDTO addTranslator(TranslatorDTO translatorDTO) {
 		return translatorService.create(translatorDTO);
 	}

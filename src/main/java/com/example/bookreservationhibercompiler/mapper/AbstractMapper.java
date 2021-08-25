@@ -9,7 +9,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AbstractMapper<Entity extends AbstractEntity, DTO extends AbstractDTO> {
+/**
+ * TODO:think about full conversion
+ * */
+public abstract class AbstractMapper<Entity extends AbstractEntity, DTO extends AbstractDTO> {
 
     ModelMapper mapper = new ModelMapper();
 

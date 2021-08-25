@@ -18,13 +18,11 @@ public class ClientController {
 	private ClientService clientService;
 
 	@GET
-	@Path("")
 	public ClientDTO getClientByParams(@QueryParam("name") String name) {
 		return null;
 	}
 
 	@POST
-	@Path("")
 	public ClientDTO addClient(ClientDTO clientDTO) {
 		return (ClientDTO) clientService.create(clientDTO);
 	}
