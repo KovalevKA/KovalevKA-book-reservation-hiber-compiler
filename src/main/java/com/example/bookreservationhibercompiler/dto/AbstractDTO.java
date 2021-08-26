@@ -8,6 +8,6 @@ import javax.persistence.MappedSuperclass;
 @Data
 public class AbstractDTO {
 
-  private String id;
+  private Long id;
 
 }
