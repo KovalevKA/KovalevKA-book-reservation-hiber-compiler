@@ -2,18 +2,18 @@ package com.example.bookreservationhibercompiler.service.impl;
 
 import com.example.bookreservationhibercompiler.dto.AbstractDTO;
 import com.example.bookreservationhibercompiler.entity.AbstractEntity;
-import com.example.bookreservationhibercompiler.mapper.AbstractMapper;
+import com.example.bookreservationhibercompiler.mapper.CommonMapper;
 import com.example.bookreservationhibercompiler.service.CommonService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class AbstractHibernateService<Entity extends AbstractEntity, DTO extends AbstractDTO>
-	extends AbstractMapper<Entity, DTO>
-	implements CommonService<Entity, DTO> {
+		implements CommonService<Entity, DTO>, CommonMapper<Entity, DTO> {
 
 	private Class<Entity> clazzEntity;
 	private Class<DTO> clazzDTO;
@@ -22,7 +22,6 @@ public class AbstractHibernateService<Entity extends AbstractEntity, DTO extends
 	SessionFactory sessionFactory;
 
 	public AbstractHibernateService(Class<Entity> clazzEntity, Class<DTO> clazzDTO) {
-		super(clazzEntity, clazzDTO);
 		this.clazzEntity = clazzEntity;
 		this.clazzDTO = clazzDTO;
 	}
@@ -50,8 +49,22 @@ public class AbstractHibernateService<Entity extends AbstractEntity, DTO extends
 	 */
 	@Transactional
 	public DTO update(Long id, DTO dto) {
-		Entity entity = sessionFactory.getCurrentSession().get(clazzEntity, id);
-		return toDTO((Entity) getCurrentSession().merge(entity));
+		Entity saveEntity = sessionFactory.getCurrentSession().get(clazzEntity, id);
+
+		for (Field field : dto.getClass().getDeclaredFields()) {
+			field.setAccessible(true);
+			Field saveField;
+			try {
+				saveField = saveEntity.getClass().getDeclaredField(field.getName());
+				saveField.setAccessible(true);
+				saveField.set(saveEntity, field.get(dto));
+				saveField.setAccessible(false);
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Field not found");
+			}
+			field.setAccessible(false);
+		}
+		return toDTO((Entity) getCurrentSession().merge(saveEntity));
 	}
 
 	@Transactional

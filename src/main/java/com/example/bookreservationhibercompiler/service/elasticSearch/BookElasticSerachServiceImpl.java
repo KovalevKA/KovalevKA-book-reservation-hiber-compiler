@@ -2,7 +2,7 @@ package com.example.bookreservationhibercompiler.service.elasticSearch;
 
 import com.example.bookreservationhibercompiler.dto.BookDTO;
 import com.example.bookreservationhibercompiler.entity.Book;
-import com.example.bookreservationhibercompiler.mapper.AbstractMapper;
+import com.example.bookreservationhibercompiler.mapper.CommonMapper;
 import com.example.bookreservationhibercompiler.service.CommonElasticSearchService;
 import org.hibernate.SessionFactory;
 import org.hibernate.search.backend.elasticsearch.ElasticsearchExtension;
@@ -21,8 +21,8 @@ import java.util.List;
 @Transactional
 public class BookElasticSerachServiceImpl implements CommonElasticSearchService<BookDTO> {
 
-    @Autowired
-    private AbstractMapper<Book, BookDTO> mapper;
+    @Autowired(required = false)
+    private CommonMapper<Book, BookDTO> mapper;
 
     private final SessionFactory sessionFactory;
 

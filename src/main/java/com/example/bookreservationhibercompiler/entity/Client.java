@@ -1,5 +1,6 @@
 package com.example.bookreservationhibercompiler.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name = "client")
 public class Client extends AbstractEntity {
 
+  @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
   private final List<Reserv> reservList = new ArrayList<>();
   @Column(name = "name")
