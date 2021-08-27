@@ -13,12 +13,17 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class TranslatorControllerTest extends JerseyTest {
 
@@ -28,9 +33,6 @@ class TranslatorControllerTest extends JerseyTest {
     protected Application configure() {
         return new ResourceConfig(TranslatorController.class);
     }
-
-    @Autowired(required = false)
-    private MockMvc mockMvc;
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -47,14 +49,10 @@ class TranslatorControllerTest extends JerseyTest {
     }
 
     @Test
-    void addTranslator() throws Exception {
+    void addTranslator() {
         TranslatorDTO translatorDTO = new TranslatorDTO();
         translatorDTO.setName(TEST_NAME_FOR_TRANSLATOR);
-        HttpRequest request = new HttpPost(URI_CONTROLLER);
-        HttpResponse response = HttpClientBuilder
-                .create()
-                .build()
-                .execute((HttpUriRequest) request);
+        HttpRequest request = new HttpGet(URI_CONTROLLER);
 
     }
 
