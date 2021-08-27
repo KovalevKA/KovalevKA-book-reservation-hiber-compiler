@@ -23,15 +23,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ReservServiceImpl implements ReservService {
 
+    @Autowired
+    private CommonMapper<Reserv, ReservDTO> mapper;
+
     @Autowired(required = false)
     private SessionFactory sessionFactory;
 
     public List<ReservDTO> getReservationClientListById(Long clientId) {
-        return sessionFactory.getCurrentSession()
+        return mapper.toDTOs(sessionFactory.getCurrentSession()
                 .createQuery("FROM Reserv WHERE client.id = :id AND reservationDateCancel < NOW()")
                 .setParameter("id", clientId)
                 .getResultList()
-        ;
+        );
     }
 
     public List<ReservDTO> checkReservedBooksByBookId(RequestParamForCheckReservedBooksByBookId param) {
