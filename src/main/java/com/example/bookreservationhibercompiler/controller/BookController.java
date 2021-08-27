@@ -25,13 +25,11 @@ public class BookController {
 	private BookService bookService;
 
 	@GET
-	@Path("")
 	public List<BookDTO> getAll() {
 		return bookService.findAll();
 	}
 
 	@POST
-	@Path("")
 	@Consumes(MediaType.APPLICATION_JSON_VALUE)
 	public BookDTO addBook(BookDTO data) {
 		return (BookDTO) bookService.create(data);

@@ -22,7 +22,6 @@ public class ReservController {
 	private ReservService reservService;
 
 	@GET()
-	@Path("")
 	public List<ReservDTO> getListReservByClientId(
 			@QueryParam("clientId") Long clientId) {
 		return reservService.getReservationClientListById(clientId);
