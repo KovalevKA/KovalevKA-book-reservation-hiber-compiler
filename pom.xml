@@ -20,8 +20,6 @@
 		<dbcp.version>9.0.1</dbcp.version>
 		<hibersearch.version>6.0.3.Final</hibersearch.version>
 		<modelmaper.version>2.4.4</modelmaper.version>
-		<mockMvc.version>3.0.0</mockMvc.version>
-		<mockito.version>3.12.2</mockito.version>
 	</properties>
 	<dependencies>
 
@@ -119,13 +117,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>${mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
@@ -163,6 +154,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>com.example.bookreservationhibercompiler.BookReservationHiberCompilerApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

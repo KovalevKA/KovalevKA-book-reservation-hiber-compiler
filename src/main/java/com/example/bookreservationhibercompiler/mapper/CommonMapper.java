@@ -35,8 +35,8 @@ public interface CommonMapper<Entity, DTO> {
         return (List<DTO>) entities.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    default <Entity> Collection<Entity> toEntities(Collection<DTO> dtos) {
-        return (Collection<Entity>) dtos.stream().map(this::toEntity).collect(Collectors.toList());
+    default <Entity> List<Entity> toEntities(Collection<DTO> dtos) {
+        return (List<Entity>) dtos.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
 
