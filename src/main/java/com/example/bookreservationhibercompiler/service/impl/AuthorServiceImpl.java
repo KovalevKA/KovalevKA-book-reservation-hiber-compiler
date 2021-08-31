@@ -23,10 +23,10 @@ public class AuthorServiceImpl
 
 	@Override
 	public List<AuthorDTO> getByNameLike(String name) {
-		return sessionFactory.getCurrentSession()
+		return toDTOs(sessionFactory.getCurrentSession()
 			.createQuery("FROM Author WHERE LOWER(name) LIKE LOWER(:name)")
 			.setParameter("name", "%" + name + "%")
 			.getResultList()
-			;
+		);
 	}
 }

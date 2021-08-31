@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface CommonMapper<Entity, DTO> {
+public interface CommonMapper<E, D> {
 
     ModelMapper mapper = new ModelMapper();
 
@@ -19,24 +19,24 @@ public interface CommonMapper<Entity, DTO> {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
-    default <DTO> DTO toDTO(Entity entity) {
-        Class<DTO> dtoClass =
-                (Class<DTO>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    default D toDTO(E entity) {
+        Class<D> dtoClass =
+                (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         return mapper.map(entity, (Type) dtoClass);
     }
 
-    default <Entity> Entity toEntity(DTO dto) {
-        Class<Entity> entityClass =
-                (Class<Entity>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    default E toEntity(D dto) {
+        Class<E> entityClass =
+                (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return mapper.map(dto, (Type) entityClass);
     }
 
-    default <DTO> List<DTO> toDTOs(Collection<Entity> entities) {
-        return (List<DTO>) entities.stream().map(this::toDTO).collect(Collectors.toList());
+    default List<D> toDTOs(List<E> entities) {
+        return entities.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    default <Entity> List<Entity> toEntities(Collection<DTO> dtos) {
-        return (List<Entity>) dtos.stream().map(this::toEntity).collect(Collectors.toList());
+    default List<E> toEntities(List<D> dtos) {
+        return dtos.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
 

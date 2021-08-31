@@ -44,9 +44,6 @@ public class AbstractHibernateService<Entity extends AbstractEntity, DTO extends
 		return toDTO(entity);
 	}
 
-	/**
-	 * TODO:Modify business logic
-	 */
 	@Transactional
 	public DTO update(Long id, DTO dto) {
 		Entity saveEntity = sessionFactory.getCurrentSession().get(clazzEntity, id);
@@ -75,7 +72,6 @@ public class AbstractHibernateService<Entity extends AbstractEntity, DTO extends
 	@Transactional
 	public void deleteById(long id) {
 		Entity entity = sessionFactory.getCurrentSession().get(clazzEntity, id);
-		;
 		delete(entity);
 	}
 

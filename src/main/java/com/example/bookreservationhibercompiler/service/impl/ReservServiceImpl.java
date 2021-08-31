@@ -52,7 +52,7 @@ public class ReservServiceImpl implements ReservService {
         }
         Date date = null;
         try {
-            date = new SimpleDateFormat("dd.MM.yyyy").parse(String.valueOf(param.getDateTo()));
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(param.getDateTo()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ public class ReservServiceImpl implements ReservService {
         Client client = sessionFactory.getCurrentSession().find(Client.class, param.getClientId());
 
         List<Book> books = sessionFactory.getCurrentSession()
-                .createQuery("FROM Book WHERE id IN (:ids) AND Reserv.reservationDateCancel > NOW()")
+                .createQuery("FROM Reserv WHERE book.id IN (:ids) AND reservationDateCancel <= NOW()")
                 .setParameter("ids", param.getListBooksId())
                 .getResultList();
         if (param.getListBooksId().size() != books.size())
