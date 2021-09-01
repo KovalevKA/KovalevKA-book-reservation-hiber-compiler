@@ -2,8 +2,10 @@ package com.example.bookreservationhibercompiler.service.impl;
 
 import com.example.bookreservationhibercompiler.dto.ClientDTO;
 import com.example.bookreservationhibercompiler.dto.ReservDTO;
+import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForCancelReservation;
 import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForCheckReservedBooksByBookId;
 import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForMakeReservetion;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -57,17 +59,31 @@ class ReservServiceImplTest {
         RequestParamForMakeReservetion param = new RequestParamForMakeReservetion();
         LocalDate dateTo = LocalDate.of(2022, 01, 01);
         List<Long> ids = new ArrayList<>();
+        ids.add(1L);
+        ids.add(2L);
         ids.add(3L);
         param.setClientId(clientService.findAll().stream().findFirst().get().getId());
         param.setListBooksId(ids);
         param.setDateTo(dateTo);
 
-        List<ReservDTO> reservDTOS = reservService.make(param);
-
-        assertNotNull(reservDTOS);
+        Assertions.assertThrows(NullPointerException.class, ()->{
+            reservService.make(param);
+        });
     }
 
     @Test
     void cancel() {
+        RequestParamForCancelReservation param = new RequestParamForCancelReservation();
+        List<Long> ids = new ArrayList<>();
+        ids.add(1L);
+        ids.add(2L);
+        ids.add(3L);
+        param.setClientId(clientService.findAll().stream().findFirst().get().getId());
+        param.setListReservId(ids);
+
+        Integer count = reservService.cancel(param);
+
+        assertEquals(1, count);
+
     }
 }
