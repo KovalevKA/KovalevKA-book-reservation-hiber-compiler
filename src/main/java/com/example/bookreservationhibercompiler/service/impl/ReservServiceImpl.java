@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ReservServiceImpl implements ReservService {
 
-    @Autowired
+    @Autowired(required = false)
     private CommonMapper<Reserv, ReservDTO> mapper;
 
     @Autowired(required = false)

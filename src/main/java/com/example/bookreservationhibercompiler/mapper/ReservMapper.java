@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Type;
 
 @Component
-public class ReservMapper implements CommonMapper<Reserv, ReservDTO>{
+public class ReservMapper implements CommonMapper<Reserv, ReservDTO> {
+
     @Override
     public ReservDTO toDTO(Reserv reserv) {
         return mapper.map(reserv, (Type) ReservDTO.class);

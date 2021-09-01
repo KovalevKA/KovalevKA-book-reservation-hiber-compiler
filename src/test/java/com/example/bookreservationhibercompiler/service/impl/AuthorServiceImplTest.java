@@ -70,7 +70,7 @@ class AuthorServiceImplTest {
     @Test
     @Order(5)
     void delete() {
-        Author author = new Author();
+        AuthorDTO author = new AuthorDTO();
         authorService.delete(author);
     }
 
