@@ -11,6 +11,6 @@ public class ClientServiceImpl
 		implements ClientService {
 
 	public ClientServiceImpl() {
-		super(Client.class);
+		super(Client.class, ClientDTO.class);
 	}
 }

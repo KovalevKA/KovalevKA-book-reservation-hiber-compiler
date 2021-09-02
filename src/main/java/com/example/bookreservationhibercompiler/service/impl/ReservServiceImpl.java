@@ -33,16 +33,14 @@ public class ReservServiceImpl implements ReservService {
         return mapper.toDTOs(sessionFactory.getCurrentSession()
                 .createQuery("FROM Reserv WHERE client.id = :id AND reservationDateCancel < NOW()")
                 .setParameter("id", clientId)
-                .getResultList()
-        );
+                .getResultList(), ReservDTO.class);
     }
 
     public List<ReservDTO> checkReservedBooksByBookId(RequestParamForCheckReservedBooksByBookId param) {
-        return sessionFactory.getCurrentSession()
+        return mapper.toDTOs(sessionFactory.getCurrentSession()
                 .createQuery("FROM Reserv WHERE book.id IN (:ids) AND reservationDateCancel > NOW()")
                 .setParameter("ids", param.getListBooksId())
-                .getResultList()
-        ;
+                .getResultList(), ReservDTO.class);
     }
 
     public List<ReservDTO> make(RequestParamForMakeReservetion param) {

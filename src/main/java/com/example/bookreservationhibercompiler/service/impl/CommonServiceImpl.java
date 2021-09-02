@@ -16,38 +16,40 @@ public class CommonServiceImpl<E extends AbstractEntity, D extends AbstractDTO> 
     @Autowired
     SessionFactory sessionFactory;
 
-    @Autowired(required = false)
+    @Autowired
     private CommonMapper<E, D> mapper;
 
     @Autowired
     private CommonRepository<E> repository;
 
     private Class<E> clazzEntity;
+    private Class<D> clazzDTO;
 
-    public CommonServiceImpl(Class<E> clazzEntity) {
+    public CommonServiceImpl(Class<E> clazzEntity, Class<D> clazzDTO) {
         this.clazzEntity = clazzEntity;
+        this.clazzDTO = clazzDTO;
     }
 
     @Override
     public D findOne(long id) {
-        return mapper.toDTO(repository.findOne(id));
+        return mapper.toDTO(repository.findOne(id, clazzEntity), clazzDTO);
     }
 
     @Override
     public List<D> findAll() {
-        List<E> all = repository.findAll();
-        return null;
+        List<E> all = repository.findAll(clazzEntity);
+        return mapper.toDTOs(all, clazzDTO);
     }
 
     @Override
     public D create(D dto) {
-        E entity = mapper.toEntity(dto);
-        return mapper.toDTO(repository.create(entity));
+        E entity = mapper.toEntity(dto, clazzEntity);
+        return mapper.toDTO(repository.create(entity), clazzDTO);
     }
 
     @Override
     public D update(Long id, D dto) {
-        E saveEntity = sessionFactory.getCurrentSession().get(clazzEntity, id);
+        E saveEntity = sessionFactory.getCurrentSession().find(clazzEntity, id);
 
         for (Field field : dto.getClass().getDeclaredFields()) {
             field.setAccessible(true);
@@ -67,11 +69,11 @@ public class CommonServiceImpl<E extends AbstractEntity, D extends AbstractDTO> 
 
     @Override
     public void delete(D dto) {
-        repository.delete(mapper.toEntity(dto));
+        repository.delete(mapper.toEntity(dto, clazzEntity));
     }
 
     @Override
     public void deleteById(long id) {
-        repository.deleteById(id);
+        repository.deleteById(id, clazzEntity);
     }
 }

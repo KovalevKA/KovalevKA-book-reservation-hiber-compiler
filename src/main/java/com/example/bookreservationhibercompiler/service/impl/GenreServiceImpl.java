@@ -22,14 +22,13 @@ public class GenreServiceImpl
     private CommonMapper<Genre, GenreDTO> mapper;
 
     public GenreServiceImpl() {
-        super(Genre.class);
+        super(Genre.class, GenreDTO.class);
     }
 
     public List<GenreDTO> getByNameLike(String name) {
         return mapper.toDTOs(sessionFactory.getCurrentSession()
                 .createQuery("FROM Genre WHERE LOWER(name) LIKE LOWER(:name)")
                 .setParameter("name", "%" + name + "%")
-                .getResultList()
-        );
+                .getResultList(), GenreDTO.class);
     }
 }

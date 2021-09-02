@@ -11,6 +11,6 @@ public class BookServiceImpl
         implements BookService {
 
     public BookServiceImpl() {
-        super(Book.class);
+        super(Book.class, BookDTO.class);
     }
 }

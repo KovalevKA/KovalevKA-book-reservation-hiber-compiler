@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 class ReservMapperTest {
 
-    private ReservMapper mapper = new ReservMapper();
+    private CommonMapper<Reserv, ReservDTO> mapper = new CommonMapperImpl();
 
     @Test
     void toDTO() {
@@ -19,7 +19,7 @@ class ReservMapperTest {
         reserv.setReservationDate(new Date());
         reserv.setReservationDateCancel(new Date());
         reserv.setId(1L);
-        ReservDTO reservDTO = mapper.toDTO(reserv);
+        ReservDTO reservDTO = mapper.toDTO(reserv, ReservDTO.class);
         Assertions.assertAll(
                 () -> assertTrue(reserv.getReservationDate().equals(reservDTO.getReservationDate())),
                 () -> assertTrue(reserv.getReservationDateCancel().equals(reservDTO.getReservationDateCancel())),
@@ -33,7 +33,7 @@ class ReservMapperTest {
         reservDTO.setReservationDate(new Date());
         reservDTO.setReservationDateCancel(new Date());
         reservDTO.setId(1L);
-        Reserv reserv = mapper.toEntity(reservDTO);
+        Reserv reserv = mapper.toEntity(reservDTO, Reserv.class);
         Assertions.assertAll(
                 () -> assertTrue(reservDTO.getReservationDate().equals(reserv.getReservationDate())),
                 () -> assertTrue(reservDTO.getReservationDateCancel().equals(reserv.getReservationDateCancel())),

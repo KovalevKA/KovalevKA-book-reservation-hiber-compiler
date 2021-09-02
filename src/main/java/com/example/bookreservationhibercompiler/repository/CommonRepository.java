@@ -2,18 +2,18 @@ package com.example.bookreservationhibercompiler.repository;
 
 import java.util.List;
 
-public interface CommonRepository<Entity> {
+public interface CommonRepository<E> {
 
-	public Entity findOne(long id);
+	E findOne(long id, Class<E> type);
 
-	public List<Entity> findAll();
+	List<E> findAll(Class<E> type);
 
-	public Entity create(Entity dto);
+	E create(E entity);
 
-	public Entity update(Entity dto);
+	E update(E entity);
 
-	public void delete(Entity Entityy);
+	void delete(E entity);
 
-	public void deleteById(long id);
+	public void deleteById(long id, Class<E> type);
 
 }

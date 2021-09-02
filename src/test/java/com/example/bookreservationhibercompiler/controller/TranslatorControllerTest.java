@@ -84,9 +84,9 @@ class TranslatorControllerTest {
     void testDeleteTranslator() {
         String uriForFind = URI_CONTROLLER + "/find-name-like?name={name}";
         ResponseEntity<List> response =
-                restTemplate.getForEntity(uriForFind, List.class, TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE);
+                restTemplate.getForEntity(uriForFind, List.class, TEST_NAME_FOR_TRANSLATOR);
 
-        TranslatorDTO dtos = mapper.convertValue(response.getBody().get(0), TranslatorDTO.class);
+        TranslatorDTO dtos = mapper.convertValue(response.getBody().stream().findFirst().get(), TranslatorDTO.class);
         String uriForEdit = URI_CONTROLLER + "/{id}";
         restTemplate.delete(uriForEdit, dtos.getId());
     }

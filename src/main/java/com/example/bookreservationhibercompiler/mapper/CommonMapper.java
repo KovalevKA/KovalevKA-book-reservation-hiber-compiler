@@ -5,23 +5,17 @@ import com.example.bookreservationhibercompiler.entity.AbstractEntity;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public interface CommonMapper<E extends AbstractEntity, D extends AbstractDTO> {
 
     ModelMapper mapper = new ModelMapper();
 
-    D toDTO(E entity);
+    D toDTO(E entity, Class<D> type);
 
-    E toEntity(D dto);
+    E toEntity(D dto, Class<E> type);
 
-    default List<D> toDTOs(List<E> entities) {
-        return entities.stream().map(this::toDTO).collect(Collectors.toList());
-    }
+    List<D> toDTOs(List<E> entities, Class<D> type);
 
-    default List<E> toEntities(List<D> dtos) {
-        return dtos.stream().map(this::toEntity).collect(Collectors.toList());
-    }
-
+    List<E> toEntities(List<D> dtos, Class<E> type);
 
 }

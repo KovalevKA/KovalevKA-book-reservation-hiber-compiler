@@ -22,7 +22,7 @@ public class AuthorServiceImpl
 	private CommonMapper<Author, AuthorDTO> mapper;
 
 	public AuthorServiceImpl() {
-		super(Author.class);
+		super(Author.class, AuthorDTO.class);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class AuthorServiceImpl
 		return mapper.toDTOs(sessionFactory.getCurrentSession()
 				.createQuery("FROM Author WHERE LOWER(name) LIKE LOWER(:name)")
 				.setParameter("name", "%" + name + "%")
-				.getResultList()
+				.getResultList(), AuthorDTO.class
 		);
 	}
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @Component
@@ -18,17 +17,13 @@ public class CommonRepositoryImpl<E extends AbstractEntity>
 	SessionFactory sessionFactory;
 
 	@Transactional(readOnly = true)
-	public E findOne(long id) {
-		Class<E> eType =
-				(Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		return getCurrentSession().get(eType, id);
+	public E findOne(long id, Class<E> type) {
+		return getCurrentSession().find(type, id);
 	}
 
 	@Transactional(readOnly = true)
-	public List<E> findAll() {
-		Class<E> eType =
-				(Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		return (List<E>) getCurrentSession().createQuery("from " + eType.getName()).list();
+	public List<E> findAll(Class<E> type) {
+		return (List<E>) getCurrentSession().createQuery("from " + type.getName()).list();
 	}
 
 	@Transactional
@@ -48,10 +43,8 @@ public class CommonRepositoryImpl<E extends AbstractEntity>
 	}
 
 	@Transactional
-	public void deleteById(long id) {
-		Class<E> eType =
-				(Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		E entity = sessionFactory.getCurrentSession().get(eType, id);
+	public void deleteById(long id, Class<E> type) {
+		E entity = sessionFactory.getCurrentSession().get(type, id);
 		delete(entity);
 	}
 

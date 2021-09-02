@@ -1,8 +1,6 @@
 package com.example.bookreservationhibercompiler.service.impl;
 
-import com.example.bookreservationhibercompiler.dto.GenreDTO;
 import com.example.bookreservationhibercompiler.dto.TranslatorDTO;
-import com.example.bookreservationhibercompiler.entity.Genre;
 import com.example.bookreservationhibercompiler.entity.Translator;
 import com.example.bookreservationhibercompiler.mapper.CommonMapper;
 import com.example.bookreservationhibercompiler.service.TranslatorService;
@@ -21,10 +19,10 @@ public class TranslatorServiceImpl
     private SessionFactory sessionFactory;
 
     @Autowired(required = false)
-    private CommonMapper<Genre, GenreDTO> mapper;
+    private CommonMapper<Translator, TranslatorDTO> mapper;
 
     public TranslatorServiceImpl() {
-        super(Translator.class);
+        super(Translator.class, TranslatorDTO.class);
     }
 
     @Override
@@ -32,7 +30,6 @@ public class TranslatorServiceImpl
         return mapper.toDTOs(sessionFactory.getCurrentSession()
                 .createQuery("FROM Translator WHERE LOWER(name) LIKE LOWER(:name)")
                 .setParameter("name", "%" + name + "%")
-                .getResultList()
-        );
+                .getResultList(), TranslatorDTO.class);
     }
 }
