@@ -1,10 +1,9 @@
 package com.example.bookreservationhibercompiler.service.impl;
 
 import com.example.bookreservationhibercompiler.dto.AuthorDTO;
-import com.example.bookreservationhibercompiler.entity.Author;
-import org.junit.Ignore;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,28 +14,42 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Transactional
 @SpringBootTest
 class AuthorServiceImplTest {
 
     private final String TEST_AUTHOR_NAME = "test_author_name";
+    private final String TEST_AUTHOR_NAME_FOR_UPDATE = "test_author_name_1";
+
+    private Long id;
 
     @Autowired
-    private AuthorServiceImpl authorService = new AuthorServiceImpl();
+    private AuthorServiceImpl authorService;
 
-    @Test
-    @Order(3)
-    void findOne() {
-        AuthorDTO authorDTO = authorService.findAll().stream().findFirst().get();
+    @BeforeEach
+    void newEntityForTest() {
+        AuthorDTO dto = new AuthorDTO();
+        dto.setName(TEST_AUTHOR_NAME);
+        dto = authorService.create(dto);
+        id = dto.getId();
+    }
 
-        AuthorDTO authorDTOForCheck = authorService.findOne(authorDTO.getId());
-
-        assertEquals(authorDTO, authorDTOForCheck);
-
+    @AfterEach
+    void deleteEntityForTest() {
+        try {
+            authorService.deleteById(id);
+        } finally {
+            return;
+        }
     }
 
     @Test
-    @Order(2)
+    void findOne() {
+        AuthorDTO authorDTOForCheck = authorService.findOne(id);
+
+        assertNotNull(authorDTOForCheck);
+    }
+
+    @Test
     void findAll() {
         List<AuthorDTO> dtos = authorService.findAll();
 
@@ -44,7 +57,6 @@ class AuthorServiceImplTest {
     }
 
     @Test
-    @Order(1)
     void create() {
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName(TEST_AUTHOR_NAME);
@@ -56,40 +68,31 @@ class AuthorServiceImplTest {
 
     @Test
     @Disabled
-    @Order(4)
     void update() {
-        AuthorDTO authorDTO = authorService.findAll().stream().findFirst().get();
+        AuthorDTO authorDTO = new AuthorDTO();
 
-        authorDTO.setName(TEST_AUTHOR_NAME);
+        authorDTO.setId(id);
+        authorDTO.setName(TEST_AUTHOR_NAME_FOR_UPDATE);
 
-        AuthorDTO authorDTOForCheck = authorService.update(authorDTO.getId(), authorDTO);
-
-        assertEquals(authorDTO, authorDTOForCheck);
+        assertEquals(authorDTO, authorService.update(id, authorDTO));
     }
 
     @Test
-    @Order(5)
     void delete() {
         AuthorDTO author = new AuthorDTO();
         authorService.delete(author);
     }
 
     @Test
-    @Order(7)
     void deleteById() {
-        AuthorDTO authorDTO = authorService.findAll().stream().findFirst().get();
-
-        authorService.deleteById(authorDTO.getId());
+        authorService.deleteById(id);
 
     }
 
     @Test
-    @Order(6)
     void getByNameLike() {
-        AuthorDTO authorDTO = authorService.create(new AuthorDTO(TEST_AUTHOR_NAME));
-
         AuthorDTO authorDTOForCHeck = authorService.getByNameLike(TEST_AUTHOR_NAME).stream().findFirst().get();
 
-        assertEquals(authorDTO, authorDTOForCHeck);
+        assertNotNull(authorDTOForCHeck);
     }
 }

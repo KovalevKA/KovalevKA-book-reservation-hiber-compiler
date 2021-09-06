@@ -1,10 +1,14 @@
 package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.TranslatorDTO;
+import com.example.bookreservationhibercompiler.service.TranslatorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -16,19 +20,41 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@Transactional
+@SpringBootTest
 class TranslatorControllerTest {
 
     private final String URI_CONTROLLER = "http://localhost:8083/api/translators";
     private final String TEST_NAME_FOR_TRANSLATOR = "test_translator";
     private final String TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE = "test_translator_1";
 
+    @Autowired
+    private TranslatorService translatorService;
+
     RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 
     ObjectMapper mapper = new ObjectMapper();
 
+    Long id;
+
+
+    @BeforeEach
+    void newEntityForTest() {
+        TranslatorDTO dto = new TranslatorDTO();
+        dto.setName(TEST_NAME_FOR_TRANSLATOR);
+        dto = translatorService.create(dto);
+        id = dto.getId();
+    }
+
+    @AfterEach
+    void deleteEntityForTest() {
+        try {
+            translatorService.deleteById(id);
+        }finally {
+            return;
+        }
+    }
+
     @Test
-    @Order(1)
     void testGetAllTranslators() {
         ResponseEntity<List> response =
                 restTemplate.getForEntity(URI_CONTROLLER, List.class);
@@ -39,7 +65,6 @@ class TranslatorControllerTest {
     }
 
     @Test
-    @Order(2)
     void testAddTranslator() {
         TranslatorDTO translatorDTO = new TranslatorDTO();
         translatorDTO.setName(TEST_NAME_FOR_TRANSLATOR);
@@ -52,7 +77,7 @@ class TranslatorControllerTest {
     }
 
     @Test
-    @Order(3)
+    @Transactional
     void testGetTranslatorsByNameLike() {
         String uri = URI_CONTROLLER + "/find-name-like?name={name}";
         ResponseEntity<List> response =
@@ -63,31 +88,20 @@ class TranslatorControllerTest {
     }
 
     @Test
-    @Order(3)
     void testEditTranslator() {
-        String uriForFind = URI_CONTROLLER + "/find-name-like?name={name}";
-        ResponseEntity<List> response =
-                restTemplate.getForEntity(uriForFind, List.class, TEST_NAME_FOR_TRANSLATOR);
+        TranslatorDTO dto = new TranslatorDTO();
+        dto.setName(TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE);
 
-        TranslatorDTO dtos = mapper.convertValue(response.getBody().stream().findFirst().get(), TranslatorDTO.class);
-        dtos.setName(TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE);
+        String uriForEdit = URI_CONTROLLER + "/" + id;
 
-        String uriForEdit = URI_CONTROLLER + "/{id}";
-        TranslatorDTO translatorDTO = restTemplate.patchForObject(uriForEdit, dtos, TranslatorDTO.class, dtos.getId());
-        assertEquals(dtos, translatorDTO);
+        assertEquals(dto, restTemplate.patchForObject(uriForEdit, dto, TranslatorDTO.class));
 
 
     }
 
     @Test
-    @Order(4)
     void testDeleteTranslator() {
-        String uriForFind = URI_CONTROLLER + "/find-name-like?name={name}";
-        ResponseEntity<List> response =
-                restTemplate.getForEntity(uriForFind, List.class, TEST_NAME_FOR_TRANSLATOR);
-
-        TranslatorDTO dtos = mapper.convertValue(response.getBody().stream().findFirst().get(), TranslatorDTO.class);
         String uriForEdit = URI_CONTROLLER + "/{id}";
-        restTemplate.delete(uriForEdit, dtos.getId());
+        restTemplate.delete(uriForEdit, id);
     }
 }

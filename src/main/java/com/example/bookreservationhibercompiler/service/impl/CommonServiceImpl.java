@@ -7,10 +7,12 @@ import com.example.bookreservationhibercompiler.repository.CommonRepository;
 import com.example.bookreservationhibercompiler.service.CommonService;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
+@Transactional
 public class CommonServiceImpl<E extends AbstractEntity, D extends AbstractDTO> implements CommonService<D> {
 
     @Autowired
@@ -64,7 +66,7 @@ public class CommonServiceImpl<E extends AbstractEntity, D extends AbstractDTO> 
             }
             field.setAccessible(false);
         }
-        return null;
+        return mapper.toDTO(saveEntity, clazzDTO);
     }
 
     @Override

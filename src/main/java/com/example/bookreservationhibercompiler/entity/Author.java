@@ -15,7 +15,6 @@ import java.util.Objects;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "author_id"))
 @Table(name = "author")
