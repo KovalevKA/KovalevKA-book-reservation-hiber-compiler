@@ -11,10 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,9 +22,9 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 class TranslatorControllerTest {
 
-    private final String URI_CONTROLLER = "http://localhost:8083/api/translators";
-    private final String TEST_NAME_FOR_TRANSLATOR = "test_translator";
-    private final String TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE = "test_translator_1";
+    private static final String URI_CONTROLLER = "http://localhost:8083/api/translators";
+    private static final String TEST_NAME_FOR_TRANSLATOR = "test_translator";
+    private static final String TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE = "test_translator_1";
 
     @Autowired
     private TranslatorService translatorService;
@@ -74,7 +74,6 @@ class TranslatorControllerTest {
     }
 
     @Test
-    @Transactional
     void testGetTranslatorsByNameLike() {
         String uri = URI_CONTROLLER + "/find-name-like?name={name}";
         ResponseEntity<List> response =

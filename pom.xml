@@ -156,6 +156,12 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.1.201405082137</version>
+				<configuration>
+					<excludes>
+						<exclude>com/example/bookreservationhibercompiler/dto/**</exclude>
+						<exclude>com/example/bookreservationhibercompiler/entity/**</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>pre-unit-test</id>

@@ -1,12 +1,14 @@
 package com.example.bookreservationhibercompiler.service.impl;
 
 import com.example.bookreservationhibercompiler.dto.AuthorDTO;
+import com.example.bookreservationhibercompiler.entity.Author;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -56,6 +58,7 @@ class AuthorServiceImplTest {
     }
 
     @Test
+    @Transactional
     void create() {
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName(TEST_AUTHOR_NAME);
@@ -93,5 +96,12 @@ class AuthorServiceImplTest {
         AuthorDTO authorDTOForCHeck = authorService.getByNameLike(TEST_AUTHOR_NAME).stream().findFirst().get();
 
         assertNotNull(authorDTOForCHeck);
+    }
+
+    @Test
+    void testGetByNameLike() {
+        List<AuthorDTO> authors = authorService.getByNameLike(TEST_AUTHOR_NAME);
+
+        assertNotNull(authors);
     }
 }
