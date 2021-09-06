@@ -12,7 +12,6 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter

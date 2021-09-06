@@ -1,7 +1,10 @@
 package com.example.bookreservationhibercompiler.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
@@ -9,7 +12,6 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter

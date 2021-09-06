@@ -1,8 +1,6 @@
 package com.example.bookreservationhibercompiler.service;
 
 import com.example.bookreservationhibercompiler.dto.AuthorDTO;
-import com.example.bookreservationhibercompiler.entity.Author;
-import com.example.bookreservationhibercompiler.repository.CommonRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

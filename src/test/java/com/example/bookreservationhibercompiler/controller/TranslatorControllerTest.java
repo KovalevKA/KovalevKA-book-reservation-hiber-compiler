@@ -2,7 +2,6 @@ package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.TranslatorDTO;
 import com.example.bookreservationhibercompiler.service.TranslatorService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,9 +31,7 @@ class TranslatorControllerTest {
 
     RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 
-    ObjectMapper mapper = new ObjectMapper();
-
-    Long id;
+    private Long id;
 
 
     @BeforeEach
