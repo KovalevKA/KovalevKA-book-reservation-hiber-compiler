@@ -6,14 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @EnableKafka
-//@Service
+@Service
 public class BookKafkaListener {
 
     @Autowired
     private BookService bookService;
+
     ObjectMapper mapper = new ObjectMapper();
 
     @KafkaListener(topics = {"book-add-topic"})
