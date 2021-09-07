@@ -52,7 +52,7 @@ public class ReservServiceImpl implements ReservService {
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(param.getDateTo()));
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Date isn't correct. Incorrect input ");
         }
         if (date.compareTo(new Date()) <= 0) {
             throw new IllegalArgumentException("Date isn't correct");

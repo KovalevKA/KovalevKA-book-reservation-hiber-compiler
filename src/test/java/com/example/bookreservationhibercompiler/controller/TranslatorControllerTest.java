@@ -22,9 +22,9 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 class TranslatorControllerTest {
 
-    private static final String URI_CONTROLLER = "http://localhost:8083/api/translators";
-    private static final String TEST_NAME_FOR_TRANSLATOR = "test_translator";
-    private static final String TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE = "test_translator_1";
+    private static String URI_CONTROLLER = "http://localhost:8083/api/translators";
+    private static String TEST_NAME_FOR_TRANSLATOR = "test_translator";
+    private static String TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE = "test_translator_1";
 
     @Autowired
     private TranslatorService translatorService;
@@ -91,8 +91,6 @@ class TranslatorControllerTest {
         String uriForEdit = URI_CONTROLLER + "/" + id;
 
         assertEquals(dto, restTemplate.patchForObject(uriForEdit, dto, TranslatorDTO.class));
-
-
     }
 
     @Test

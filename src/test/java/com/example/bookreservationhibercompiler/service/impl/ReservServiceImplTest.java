@@ -6,6 +6,7 @@ import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestPar
 import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForCheckReservedBooksByBookId;
 import com.example.bookreservationhibercompiler.dto.requestBodyParams.RequestParamForMakeReservetion;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 @SpringBootTest
@@ -56,36 +58,91 @@ class ReservServiceImplTest {
         assertNotNull(reservDTOS);
     }
 
-    @Test
-    void make() {
-        RequestParamForMakeReservetion param = new RequestParamForMakeReservetion();
-        LocalDate dateTo = LocalDate.of(2022, 01, 01);
-        List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        ids.add(2L);
-        ids.add(3L);
-        param.setClientId(clientService.findAll().stream().findFirst().get().getId());
-        param.setListBooksId(ids);
-        param.setDateTo(dateTo);
 
-        Assertions.assertThrows(NullPointerException.class, ()->{
-            reservService.make(param);
-        });
+    @Nested
+    class MakeReservation {
+
+        @Test
+        void makeIllegalArgumentException() {
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                reservService.make(new RequestParamForMakeReservetion());
+            });
+        }
+
+        @Test
+        void makeParseException() {
+            RequestParamForMakeReservetion param = new RequestParamForMakeReservetion();
+            List<Long> ids = new ArrayList<>();
+            ids.add(1L);
+            ids.add(2L);
+            ids.add(3L);
+            param.setListBooksId(ids);
+
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                reservService.make(param);
+            });
+        }
+
+        @Test
+        void makeDateIllegalArgumentException() {
+            RequestParamForMakeReservetion param = new RequestParamForMakeReservetion();
+            LocalDate dateTo = LocalDate.of(2000, 01, 01);
+            List<Long> ids = new ArrayList<>();
+            ids.add(1L);
+            ids.add(2L);
+            ids.add(3L);
+            param.setListBooksId(ids);
+            param.setDateTo(dateTo);
+
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                reservService.make(param);
+            });
+        }
+
+        @Test
+        void makeNullPointerException() {
+            RequestParamForMakeReservetion param = new RequestParamForMakeReservetion();
+            LocalDate dateTo = LocalDate.of(2022, 01, 01);
+            List<Long> ids = new ArrayList<>();
+            ids.add(1L);
+            ids.add(2L);
+            ids.add(3L);
+            param.setClientId(clientService.findAll().stream().findFirst().get().getId());
+            param.setListBooksId(ids);
+            param.setDateTo(dateTo);
+
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                reservService.make(param);
+            });
+        }
     }
 
-    @Test
-    void cancel() {
-        RequestParamForCancelReservation param = new RequestParamForCancelReservation();
-        List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        ids.add(2L);
-        ids.add(3L);
-        param.setClientId(clientService.findAll().stream().findFirst().get().getId());
-        param.setListReservId(ids);
+    @Nested
+    class CancelReservation {
 
-        Integer count = reservService.cancel(param);
+        @Test
+        void cancetIllegalArgumentException() {
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                reservService.cancel(new RequestParamForCancelReservation());
+            });
+        }
 
-        assertEquals(1, count);
+        @Test
+        void cancel() {
+            RequestParamForCancelReservation param = new RequestParamForCancelReservation();
+            List<Long> ids = new ArrayList<>();
+            ids.add(1L);
+            ids.add(2L);
+            ids.add(3L);
+            param.setClientId(clientService.findAll().stream().findFirst().get().getId());
+            param.setListReservId(ids);
 
+            Integer count = reservService.cancel(param);
+
+            assertEquals(1, count);
+
+        }
     }
+
+
 }
