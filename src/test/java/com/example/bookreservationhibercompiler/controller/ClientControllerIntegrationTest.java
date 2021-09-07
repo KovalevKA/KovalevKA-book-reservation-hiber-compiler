@@ -2,6 +2,8 @@ package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.ClientDTO;
 import com.example.bookreservationhibercompiler.service.ClientService;
+import org.apache.kafka.test.IntegrationTest;
+import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +16,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+@Category(IntegrationTest.class)
 @SpringBootTest
-class ClientControllerTest {
+class ClientControllerIntegrationTest {
 
     private static String URI_CONTROLLER = "http://localhost:8083/api/clients";
     private static String TEST_NAME_FOR_CLIENT = "test_client";

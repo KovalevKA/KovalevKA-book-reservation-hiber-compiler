@@ -2,6 +2,8 @@ package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.TranslatorDTO;
 import com.example.bookreservationhibercompiler.service.TranslatorService;
+import org.apache.kafka.test.IntegrationTest;
+import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +21,9 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@Category(IntegrationTest.class)
 @SpringBootTest
-class TranslatorControllerTest {
+class TranslatorControllerIntegrationTest {
 
     private static String URI_CONTROLLER = "http://localhost:8083/api/translators";
     private static String TEST_NAME_FOR_TRANSLATOR = "test_translator";

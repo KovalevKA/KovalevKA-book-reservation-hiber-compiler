@@ -2,6 +2,8 @@ package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.AuthorDTO;
 import com.example.bookreservationhibercompiler.service.AuthorService;
+import org.apache.kafka.test.IntegrationTest;
+import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +19,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Category(IntegrationTest.class)
 @SpringBootTest
-class AuthorControllerTest {
+class AuthorControllerIntegrationTest {
 
     private static String URI_CONTROLLER = "http://localhost:8083/api/authors";
     private static String TEST_NAME_FOR_AUTHOR = "test_author";
@@ -51,7 +54,7 @@ class AuthorControllerTest {
     }
 
     @Test
-    void getAllAuthors() {
+    void getAllAuthors() throws Exception {
         ResponseEntity<List> response =
                 restTemplate.getForEntity(URI_CONTROLLER, List.class);
 
