@@ -4,7 +4,11 @@ Moved the application with books to a new project.
 <p>Used</p> 
 <ul>hibernate</ul>
 <ul>jax-rx</ul>
+<ul>jacoco</ul>
 
+<br/>
+for start unit tests must use <b>mvn test</b>
+<p>for start all tests (unit & integration) must use <b>mvn integration-test</b>. app must be run</p>
 <br/>
 <p></p>Branch <b>dev_hibernate</b> is main dev branch. this is where the main logic of the application is. </p>
 

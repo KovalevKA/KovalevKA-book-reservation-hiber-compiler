@@ -1,6 +1,7 @@
 package com.example.bookreservationhibercompiler.service.impl;
 
 import com.example.bookreservationhibercompiler.dto.AuthorDTO;
+import com.example.bookreservationhibercompiler.entity.Author;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -23,7 +24,7 @@ class CommonServiceImplTest {
     private Long id;
 
     @Autowired
-    private AuthorServiceImpl authorService;
+    private CommonServiceImpl<Author, AuthorDTO> authorService;
 
     @BeforeEach
     void newEntityForTest() {
@@ -88,12 +89,5 @@ class CommonServiceImplTest {
     void deleteById() {
         authorService.deleteById(id);
 
-    }
-
-    @Test
-    void getByNameLike() {
-        AuthorDTO authorDTOForCHeck = authorService.getByNameLike(TEST_AUTHOR_NAME).stream().findFirst().get();
-
-        assertNotNull(authorDTOForCHeck);
     }
 }

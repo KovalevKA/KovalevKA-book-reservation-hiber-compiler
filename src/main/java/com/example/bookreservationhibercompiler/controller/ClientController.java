@@ -24,7 +24,7 @@ public class ClientController {
 
 	@POST
 	public ClientDTO addClient(ClientDTO clientDTO) {
-		return (ClientDTO) clientService.create(clientDTO);
+		return clientService.create(clientDTO);
 	}
 
 	@PATCH

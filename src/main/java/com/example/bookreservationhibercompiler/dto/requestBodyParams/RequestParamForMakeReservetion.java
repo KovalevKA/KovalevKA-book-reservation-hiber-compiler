@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,7 +20,7 @@ public class RequestParamForMakeReservetion {
 
     @NotNull
     @Size(max = 5, min = 1)
-    private List<Long> listBooksId;
+    private List<Long> listBooksId = new ArrayList<>();
 
     @NotNull
     @Future
