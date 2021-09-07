@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookServiceImpl
-	extends AbstractHibernateService<Book, BookDTO>
-	implements BookService {
+        extends CommonServiceImpl<Book, BookDTO>
+        implements BookService {
 
-	public BookServiceImpl() {
-		super(Book.class, BookDTO.class);
-	}
+    public BookServiceImpl() {
+        super(Book.class, BookDTO.class);
+    }
 }

@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ReservServiceImpl implements ReservService {
 
-    @Autowired
+    @Autowired(required = false)
     private CommonMapper<Reserv, ReservDTO> mapper;
 
     @Autowired(required = false)
@@ -33,16 +33,14 @@ public class ReservServiceImpl implements ReservService {
         return mapper.toDTOs(sessionFactory.getCurrentSession()
                 .createQuery("FROM Reserv WHERE client.id = :id AND reservationDateCancel < NOW()")
                 .setParameter("id", clientId)
-                .getResultList()
-        );
+                .getResultList(), ReservDTO.class);
     }
 
     public List<ReservDTO> checkReservedBooksByBookId(RequestParamForCheckReservedBooksByBookId param) {
-        return sessionFactory.getCurrentSession()
+        return mapper.toDTOs(sessionFactory.getCurrentSession()
                 .createQuery("FROM Reserv WHERE book.id IN (:ids) AND reservationDateCancel > NOW()")
                 .setParameter("ids", param.getListBooksId())
-                .getResultList()
-        ;
+                .getResultList(), ReservDTO.class);
     }
 
     public List<ReservDTO> make(RequestParamForMakeReservetion param) {
@@ -52,7 +50,7 @@ public class ReservServiceImpl implements ReservService {
         }
         Date date = null;
         try {
-            date = new SimpleDateFormat("dd.MM.yyyy").parse(String.valueOf(param.getDateTo()));
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(param.getDateTo()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -63,12 +61,11 @@ public class ReservServiceImpl implements ReservService {
         Client client = sessionFactory.getCurrentSession().find(Client.class, param.getClientId());
 
         List<Book> books = sessionFactory.getCurrentSession()
-                .createQuery("FROM Book WHERE id IN (:ids) AND Reserv.reservationDateCancel > NOW()")
+                .createQuery("FROM Book WHERE id IN (:ids) AND Reserv.reservationDateCancel <= NOW()")
                 .setParameter("ids", param.getListBooksId())
                 .getResultList();
-        if (param.getListBooksId().size() != books.size())
+        if (books.size() != param.getListBooksId().size())
             throw new IllegalArgumentException("Some books is reserved");
-
         List<Reserv> reservs = new ArrayList<>();
         Date finalDate = date;
         books.forEach(book -> reservs.add(new Reserv(client, book, finalDate)));

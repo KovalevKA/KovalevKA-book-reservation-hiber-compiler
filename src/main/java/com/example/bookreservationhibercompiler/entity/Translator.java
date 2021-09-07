@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -43,18 +44,11 @@ public class Translator extends AbstractEntity {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof Translator)) {
-      return false;
-    }
-    Translator that = (Translator) o;
-    return name.equals(that.name);
+    return EqualsBuilder.reflectionEquals(this, o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name);
+    return HashCodeBuilder.reflectionHashCode(this);
   }
 }

@@ -1,16 +1,20 @@
 package com.example.bookreservationhibercompiler.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
-@AttributeOverride(name = "id", column = @Column(name = "reserv_id"))
+@NoArgsConstructor
 @Table(name = "reserv")
+@AttributeOverride(name = "id", column = @Column(name = "reserv_id"))
 public class Reserv extends AbstractEntity {
 
   @ManyToOne
@@ -31,5 +35,15 @@ public class Reserv extends AbstractEntity {
     client.addReserv(this);
     this.reservationDate = new Date();
     this.reservationDateCancel = reservationDateCancel;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    return EqualsBuilder.reflectionEquals(this, o);
+  }
+
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this);
   }
 }

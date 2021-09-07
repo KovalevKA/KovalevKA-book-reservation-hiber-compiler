@@ -49,10 +49,10 @@ public class BookElasticSerachServiceImpl implements CommonElasticSearchService<
         SearchSession searchSession = Search.session(sessionFactory.getCurrentSession());
         ElasticsearchSearchQuery<Book> query = searchSession.search(Book.class)
                 .extension(ElasticsearchExtension.get())
-                .where(f -> f.matchAll())
+                .where(f -> f.fromJson(keyWords))
                 .toQuery();
         ElasticsearchSearchQuery<Book> searchQuery = query.extension(ElasticsearchExtension.get());
-        return mapper.toDTOs(searchQuery.fetchAll().hits());
+        return mapper.toDTOs(searchQuery.fetchAll().hits(), BookDTO.class);
     }
 
 }

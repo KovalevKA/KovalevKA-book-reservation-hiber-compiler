@@ -1,20 +1,20 @@
 package com.example.bookreservationhibercompiler.service;
 
+import com.example.bookreservationhibercompiler.dto.AbstractDTO;
+
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 
-public interface CommonService<Entity, DTO> {
+public interface CommonService<D extends AbstractDTO> {
 
-	public DTO findOne(long id);
+    public D findOne(long id);
 
-	public List<DTO> findAll();
+    public List<D> findAll();
 
-	public DTO create(DTO dto);
+    public D create(D dto);
 
-	public DTO update(Long id, DTO dto);
+    public D update(Long id, D dto);
 
-	public void delete(Entity entity);
+    public void delete(D dto);
 
-	public void deleteById(long id);
-
-	}
+    public void deleteById(long id);
+}

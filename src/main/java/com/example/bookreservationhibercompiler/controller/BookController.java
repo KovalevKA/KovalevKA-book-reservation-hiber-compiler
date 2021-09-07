@@ -1,19 +1,14 @@
 package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.BookDTO;
-import com.example.bookreservationhibercompiler.entity.Book;
 import com.example.bookreservationhibercompiler.service.BookService;
-import java.util.List;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import com.example.bookreservationhibercompiler.service.CommonElasticSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.*;
+import java.util.List;
 
 @Component
 @Path("books")
@@ -23,6 +18,8 @@ public class BookController {
 
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private CommonElasticSearchService<BookDTO> elasticSearchService;
 
 	@GET
 	public List<BookDTO> getAll() {
@@ -33,6 +30,12 @@ public class BookController {
 	@Consumes(MediaType.APPLICATION_JSON_VALUE)
 	public BookDTO addBook(BookDTO data) {
 		return (BookDTO) bookService.create(data);
+	}
+
+	@POST
+	@Path("search")
+	public List<BookDTO> search(String keyWords) throws Exception {
+		return elasticSearchService.search(keyWords);
 	}
 
 	@GET

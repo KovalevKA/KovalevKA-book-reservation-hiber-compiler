@@ -1,72 +1,103 @@
 package com.example.bookreservationhibercompiler.controller;
 
 import com.example.bookreservationhibercompiler.dto.TranslatorDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
+import com.example.bookreservationhibercompiler.service.TranslatorService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
-import javax.ws.rs.core.Application;
-import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-class TranslatorControllerTest extends JerseyTest {
+@SpringBootTest
+class TranslatorControllerTest {
 
-    private final String URI_CONTROLLER = "http://localhost:8083/api/translators";
+    private static final String URI_CONTROLLER = "http://localhost:8083/api/translators";
+    private static final String TEST_NAME_FOR_TRANSLATOR = "test_translator";
+    private static final String TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE = "test_translator_1";
 
-    @Override
-    protected Application configure() {
-        return new ResourceConfig(TranslatorController.class);
+    @Autowired
+    private TranslatorService translatorService;
+
+    RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+
+    private Long id;
+
+
+    @BeforeEach
+    void newEntityForTest() {
+        TranslatorDTO dto = new TranslatorDTO();
+        dto.setName(TEST_NAME_FOR_TRANSLATOR);
+        dto = translatorService.create(dto);
+        id = dto.getId();
     }
 
-    @Autowired(required = false)
-    private MockMvc mockMvc;
-
-    ObjectMapper mapper = new ObjectMapper();
-
-    private final String TEST_NAME_FOR_TRANSLATOR = "test";
-
-    @Test
-    void getAllTranslators() throws IOException {
-        HttpRequest request = new HttpGet(URI_CONTROLLER);
-        HttpResponse response = HttpClientBuilder
-                .create()
-                .build()
-                .execute((HttpUriRequest) request);
-        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+    @AfterEach
+    void deleteEntityForTest() {
+        try {
+            translatorService.deleteById(id);
+        }finally {
+            return;
+        }
     }
 
     @Test
-    void addTranslator() throws Exception {
+    void testGetAllTranslators() {
+        ResponseEntity<List> response =
+                restTemplate.getForEntity(URI_CONTROLLER, List.class);
+        Assertions.assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertTrue(!response.getBody().isEmpty())
+        );
+    }
+
+    @Test
+    void testAddTranslator() {
         TranslatorDTO translatorDTO = new TranslatorDTO();
         translatorDTO.setName(TEST_NAME_FOR_TRANSLATOR);
-        HttpRequest request = new HttpPost(URI_CONTROLLER);
-        HttpResponse response = HttpClientBuilder
-                .create()
-                .build()
-                .execute((HttpUriRequest) request);
+        ResponseEntity<TranslatorDTO> response =
+                restTemplate.postForEntity(URI_CONTROLLER, translatorDTO, TranslatorDTO.class);
+        Assertions.assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals(translatorDTO, response.getBody())
+        );
+    }
+
+    @Test
+    void testGetTranslatorsByNameLike() {
+        String uri = URI_CONTROLLER + "/find-name-like?name={name}";
+        ResponseEntity<List> response =
+                restTemplate.getForEntity(uri, List.class, TEST_NAME_FOR_TRANSLATOR);
+        Assertions.assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode())
+        );
+    }
+
+    @Test
+    void testEditTranslator() {
+        TranslatorDTO dto = new TranslatorDTO();
+        dto.setName(TEST_NAME_FOR_TRANSLATOR_FOR_CHANGE);
+
+        String uriForEdit = URI_CONTROLLER + "/" + id;
+
+        assertEquals(dto, restTemplate.patchForObject(uriForEdit, dto, TranslatorDTO.class));
+
 
     }
 
     @Test
-    void getTranslatorsByNameLike() {
-    }
-
-    @Test
-    void editTranslator() {
-    }
-
-    @Test
-    void deleteTranslator() {
+    void testDeleteTranslator() {
+        String uriForEdit = URI_CONTROLLER + "/{id}";
+        restTemplate.delete(uriForEdit, id);
     }
 }

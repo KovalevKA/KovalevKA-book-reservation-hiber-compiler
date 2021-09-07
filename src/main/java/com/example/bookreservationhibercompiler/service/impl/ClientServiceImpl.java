@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClientServiceImpl
-	extends AbstractHibernateService<Client, ClientDTO>
-	implements ClientService {
+		extends CommonServiceImpl<Client, ClientDTO>
+		implements ClientService {
 
 	public ClientServiceImpl() {
 		super(Client.class, ClientDTO.class);

@@ -2,30 +2,34 @@ package com.example.bookreservationhibercompiler.service.impl;
 
 import com.example.bookreservationhibercompiler.dto.TranslatorDTO;
 import com.example.bookreservationhibercompiler.entity.Translator;
+import com.example.bookreservationhibercompiler.mapper.CommonMapper;
 import com.example.bookreservationhibercompiler.service.TranslatorService;
-import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TranslatorServiceImpl
-	extends AbstractHibernateService<Translator, TranslatorDTO>
-	implements TranslatorService {
+        extends CommonServiceImpl<Translator, TranslatorDTO>
+        implements TranslatorService {
 
-	@Autowired
-	private SessionFactory sessionFactory;
+    @Autowired(required = false)
+    private SessionFactory sessionFactory;
 
-	public TranslatorServiceImpl() {
-		super(Translator.class, TranslatorDTO.class);
-	}
+    @Autowired(required = false)
+    private CommonMapper<Translator, TranslatorDTO> mapper;
 
-	@Override
-	public List<TranslatorDTO> getByNameLike(String name) {
-		return sessionFactory.getCurrentSession()
-			.createQuery("FROM Translator WHERE LOWER(name) LIKE LOWER(:name)")
-			.setParameter("name", "%" + name + "%")
-			.getResultList()
-			;
-	}
+    public TranslatorServiceImpl() {
+        super(Translator.class, TranslatorDTO.class);
+    }
+
+    @Override
+    public List<TranslatorDTO> getByNameLike(String name) {
+        return mapper.toDTOs(sessionFactory.getCurrentSession()
+                .createQuery("FROM Translator WHERE LOWER(name) LIKE LOWER(:name)")
+                .setParameter("name", "%" + name + "%")
+                .getResultList(), TranslatorDTO.class);
+    }
 }

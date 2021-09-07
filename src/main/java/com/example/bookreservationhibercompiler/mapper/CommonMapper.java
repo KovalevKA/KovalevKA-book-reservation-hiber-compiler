@@ -1,43 +1,21 @@
 package com.example.bookreservationhibercompiler.mapper;
 
+import com.example.bookreservationhibercompiler.dto.AbstractDTO;
+import com.example.bookreservationhibercompiler.entity.AbstractEntity;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 
-import javax.annotation.PostConstruct;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public interface CommonMapper<Entity, DTO> {
+public interface CommonMapper<E extends AbstractEntity, D extends AbstractDTO> {
 
     ModelMapper mapper = new ModelMapper();
 
-    @PostConstruct
-    default void modelMapperSetting() {
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-    }
+    D toDTO(E entity, Class<D> type);
 
-    default <DTO> DTO toDTO(Entity entity) {
-        Class<DTO> dtoClass =
-                (Class<DTO>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        return mapper.map(entity, (Type) dtoClass);
-    }
+    E toEntity(D dto, Class<E> type);
 
-    default <Entity> Entity toEntity(DTO dto) {
-        Class<Entity> entityClass =
-                (Class<Entity>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        return mapper.map(dto, (Type) entityClass);
-    }
+    List<D> toDTOs(List<E> entities, Class<D> type);
 
-    default <DTO> List<DTO> toDTOs(Collection<Entity> entities) {
-        return (List<DTO>) entities.stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    default <Entity> Collection<Entity> toEntities(Collection<DTO> dtos) {
-        return (Collection<Entity>) dtos.stream().map(this::toEntity).collect(Collectors.toList());
-    }
-
+    List<E> toEntities(List<D> dtos, Class<E> type);
 
 }

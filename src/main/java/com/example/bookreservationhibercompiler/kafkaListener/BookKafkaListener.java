@@ -24,6 +24,5 @@ public class BookKafkaListener {
         Long id = bookService.create(bookDTO).getId();
         bookDTO.setId(id);
         System.out.println(bookDTO);
-
     }
 }

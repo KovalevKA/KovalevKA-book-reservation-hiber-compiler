@@ -1,19 +1,22 @@
 package com.example.bookreservationhibercompiler.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "author_id"))
 @Table(name = "author")
@@ -43,18 +46,11 @@ public class Author extends AbstractEntity {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof Author)) {
-      return false;
-    }
-    Author author = (Author) o;
-    return name.equals(author.name);
+    return EqualsBuilder.reflectionEquals(this, o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name);
+    return HashCodeBuilder.reflectionHashCode(this);
   }
 }
