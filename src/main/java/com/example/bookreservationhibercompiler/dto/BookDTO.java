@@ -13,7 +13,7 @@ public class BookDTO extends AbstractDTO {
   private String publishHouse;
   private int publishYear;
   private String description;
-  private Set<AuthorDTO> authors = new HashSet<>();
-  private Set<GenreDTO> genres = new HashSet<>();
-  private Set<TranslatorDTO> translators = new HashSet<>();
+  private Set<AuthorDTO> authorList = new HashSet<>();
+  private Set<GenreDTO> genreList = new HashSet<>();
+  private Set<TranslatorDTO> translatorList = new HashSet<>();
 }
